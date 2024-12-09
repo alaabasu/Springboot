@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Students</title>
+    <style>
+        /* Styling for layout and form aesthetics */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #282828;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-box h2 {
+            color: #03e9f4;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .user-box {
+            margin-bottom: 20px;
+        }
+
+        .user-box input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: transparent;
+            color: #fff;
+            border: 1px solid #03e9f4;
+            border-radius: 5px;
+        }
+
+        .button-43 {
+            width: 100%;
+            padding: 10px;
+            background: #03e9f4;
+            color: #282828;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .button-43:hover {
+            background: #029db3;
+        }
+
+        .student-form {
+            margin-top: 10px;
+        }
+
+        /* Styling for error message */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+
+<script>
+    let existingIds = [];
+
+    function generateStudentForms() {
+        existingIds = []; // Reset existing IDs
+
+        const count = parseInt(document.getElementById("studentCount").value) || 0;
+        const formsContainer = document.getElementById("formsContainer");
+        formsContainer.innerHTML = ""; // Clear existing forms
+
+        for (let i = 0; i < count; i++) {
+            const formGroup = document.createElement("div");
+            formGroup.classList.add("student-form");
+
+            formGroup.innerHTML = `
+                <h3>Student ${i + 1}</h3>
+                <div class="user-box">
+                    <label>Student ID:</label>
+                    <input type="text" id="id-${i}" name="students[${i}].id" required />
+                </div>
+                <div class="user-box">
+                    <label>First Name:</label>
+                    <input type="text" id="firstName-${i}" name="students[${i}].firstName" required />
+                </div>
+                <div class="user-box">
+                    <label>Last Name:</label>
+                    <input type="text" id="lastName-${i}" name="students[${i}].lastName" required />
+                </div>
+                <div class="user-box">
+                    <label>Gender:</label>
+                    <input type="text" id="gender-${i}" name="students[${i}].gender" required />
+                </div>
+                <div class="user-box">
+                    <label>GPA (0-4):</label>
+                    <input type="number" id="gpa-${i}" step="0.01" name="students[${i}].gpa" required />
+                </div>
+                <div class="user-box">
+                    <label>Level:</label>
+                    <input type="number" id="level-${i}" name="students[${i}].level" required />
+                </div>
+                <div class="user-box">
+                    <label>Address:</label>
+                    <input type="text" id="address-${i}" name="students[${i}].address" required />
+                </div>
+                <div id="error-message-${i}" class="error-message"></div>
+            `;
+            formsContainer.appendChild(formGroup);
+
+            const idField = document.getElementById(`id-${i}`);
+            const errorMessage = document.getElementById(`error-message-${i}`);
+
+            idField.addEventListener('input', function() {
+                if (existingIds.includes(idField.value.trim()) && idField.value.trim() !== '') {
+                    errorMessage.textContent = 'Duplicate ID: This ID is already taken.';
+                } else {
+                    errorMessage.textContent = ''; // Clear error message
+                }
+            });
+        }
+    }
+
+    function validateForm() {
+        const studentCount = parseInt(document.getElementById("studentCount").value);
+        let isValid = true;
+
+        existingIds = [];
+
+        const nameRegex = /^[a-zA-Z]+$/;
+
+        for (let i = 0; i < studentCount; i++) {
+            const id = document.getElementById(`id-${i}`).value.trim();
+            const firstName = document.getElementById(`firstName-${i}`).value.trim();
+            const lastName = document.getElementById(`lastName-${i}`).value.trim();
+            const address = document.getElementById(`address-${i}`).value.trim();
+            const gpa = parseFloat(document.getElementById(`gpa-${i}`).value);
+            const level = parseInt(document.getElementById(`level-${i}`).value);
+
+            // Validate empty fields
+            if (!id || !firstName || !lastName || !address || !gpa || !level) {
+                alert(`Please fill all the fields for Student ${i + 1}`);
+                isValid = false;
+                break;
+            }
+
+            // Validate name and address contain only letters
+            if (!nameRegex.test(firstName) || !nameRegex.test(lastName) || !nameRegex.test(address)) {
+                alert(`Student ${i + 1}: Name and address must contain only letters (a-z, A-Z)`);
+                isValid = false;
+                break;
+            }
+
+            // Validate GPA
+            if (gpa < 0 || gpa > 4) {
+                alert(`Student ${i + 1}: GPA must be between 0 and 4`);
+                isValid = false;
+                break;
+            }
+
+            // Check for duplicate IDs
+            if (existingIds.includes(id)) {
+                alert(`Duplicate ID found for Student ${i + 1}`);
+                isValid = false;
+                break;
+            }
+
+            existingIds.push(id);
+        }
+
+        return isValid;
+    }
+</script>
+</head>
+
+<body>
+<div class="login-box">
+    <h2>New Students</h2>
+
+    <div class="user-box">
+        <label>Number of Students:</label>
+        <input type="number" id="studentCount" min="1" required />
+        <button type="button" onclick="generateStudentForms()" class="button-43">Generate Forms</button>
+    </div>
+
+    <form action="/students" th:action="@{/students}" method="POST" onsubmit="return validateForm()">
+        <div id="formsContainer"></div>
+        <button type="submit" class="button-43">Submit All Students</button>
+    </form>
+
+    <div th:if="${message}" class="error-message" th:text="${message}"></div>
+</div>
+</body>
+</html>

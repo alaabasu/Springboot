@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Student</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-box {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        .search-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .search-box label {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .search-box select,
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .search-box select:focus,
+        .search-box input:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        .search-box button {
+            background-color: #007BFF;
+            color: #fff;
+            font-size: 16px;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-box button:hover {
+            background-color: #0056b3;
+        }
+
+        .search-results {
+            margin-top: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-results ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .search-results li {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-results li p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .no-results {
+            text-align: center;
+            font-size: 18px;
+            color: #999;
+        }
+    </style>
+    <script>
+        // JavaScript to toggle the input field based on the attribute type
+        function toggleAttributeInput() {
+            const attributeType = document.getElementById("attributeType").value;
+            document.getElementById("attributeInput").type = attributeType === "gpa" || attributeType === "level" ? "number" : "text";
+            document.getElementById("attributeInput").placeholder = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
+        }
+    </script>
+</head>
+<body>
+    <div class="search-box">
+        <h2>Search Student</h2>
+        <form action="/searchStudent" method="POST">
+            <label for="attributeType">Search by Attribute:</label>
+            <select id="attributeType" name="attributeType" onchange="toggleAttributeInput()">
+                <option value="id">ID</option>
+                <option value="firstName">First Name</option>
+                <option value="lastName">Last Name</option>
+                <option value="gender">Gender</option>
+                <option value="gpa">GPA</option>
+                <option value="level">Level</option>
+                <option value="address">Address</option>
+            </select>
+    
+            <label for="attributeValue">Attribute Value:</label>
+            <input type="text" id="attributeInput" name="attributeValue" placeholder="Enter value">
+    
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    
+    <div th:if="${count > 0}" class="search-results">
+        <ul>
+            <li th:each="student : ${results}">
+                <p th:text="'Name: ' + ${student.firstName} + ' ' + ${student.lastName}"></p>
+                <p>ID: <span th:text="${student.id}"></span></p>
+                <p>Gender: <span th:text="${student.gender}"></span></p>
+                <p>GPA: <span th:text="${student.gpa}"></span></p>
+                <p>Level: <span th:text="${student.level}"></span></p>
+                <p>Address: <span th:text="${student.address}"></span></p>
+            </li>
+        </ul>
+
+        <br>
+        <h3 th:text="'Search Results (' + ${count} + ' found)'"></h3>
+    </div>
+
+
+    
+    <div th:if="${count == 0}" class="no-results">
+        <p>No students found.</p>
+    </div>
+
+    
+    
+
+</body>
+</html>

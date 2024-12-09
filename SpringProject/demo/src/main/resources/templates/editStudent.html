@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Student</title>
+    <style>
+        /* Styling for layout and form aesthetics */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #282828;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-box h2 {
+            color: #03e9f4;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .user-box {
+            margin-bottom: 20px;
+        }
+
+        .user-box input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: transparent;
+            color: #fff;
+            border: 1px solid #03e9f4;
+            border-radius: 5px;
+        }
+
+        .button-43 {
+            width: 100%;
+            padding: 10px;
+            background: #03e9f4;
+            color: #282828;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .button-43:hover {
+            background: #029db3;
+        }
+
+        /* Styling for error message */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        // Function to validate the student data
+        function validateForm() {
+            let isValid = true;
+
+            // Get form values
+            const firstName = document.getElementById("firstName").value.trim();
+            const lastName = document.getElementById("lastName").value.trim();
+            const address = document.getElementById("address").value.trim();
+            const gpa = parseFloat(document.getElementById("gpa").value);
+            const level = parseInt(document.getElementById("level").value);
+
+            // Regex to check if names and address contain only letters
+            const nameRegex = /^[a-zA-Z]+$/; // Only letters for first name, last name, and address
+
+            // 1. Validate empty fields (excluding the ID field, which is readonly)
+            if (!firstName || !lastName || !address || !gpa || !level) {
+                alert("Please fill all the fields");
+                isValid = false;
+            }
+
+            // 2. Validate name and address contain only letters
+            if (!nameRegex.test(firstName) || !nameRegex.test(lastName) || !nameRegex.test(address)) {
+                alert("First name, last name, and address must contain only letters (a-z, A-Z)");
+                isValid = false;
+            }
+
+            // 3. Validate GPA
+            if (gpa < 0 || gpa > 4) {
+                alert("GPA must be between 0 and 4");
+                isValid = false;
+            }
+
+            // 4. Check for duplicate IDs (this would apply only if you allow multiple students or you have a list of existing IDs)
+            // In this case, since the ID is readonly, we do not check for it.
+            
+            return isValid;
+        }
+    </script>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Edit Student</h2>
+
+        <form action="/updateStudent" th:action="@{/updateStudent}" method="POST" onsubmit="return validateForm()">
+            <div class="user-box">
+                <label>Student ID:</label>
+                <input type="text" id="id" name="id" th:value="${student.id}" required readonly />
+            </div>
+            <div class="user-box">
+                <label>First Name:</label>
+                <input type="text" id="firstName" name="firstName" th:value="${student.firstName}" required />
+            </div>
+            <div class="user-box">
+                <label>Last Name:</label>
+                <input type="text" id="lastName" name="lastName" th:value="${student.lastName}" required />
+            </div>
+            <div class="user-box">
+                <label>Gender:</label>
+                <input type="text" id="gender" name="gender" th:value="${student.gender}" required />
+            </div>
+            <div class="user-box">
+                <label>GPA (0-4):</label>
+                <input type="number" id="gpa" name="gpa" step="0.01" th:value="${student.gpa}" required />
+            </div>
+            <div class="user-box">
+                <label>Level:</label>
+                <input type="number" id="level" name="level" th:value="${student.level}" required />
+            </div>
+            <div class="user-box">
+                <label>Address:</label>
+                <input type="text" id="address" name="address" th:value="${student.address}" required />
+            </div>
+
+            <button type="submit" class="button-43">Update Student</button>
+        </form>
+    </div>
+</body>
+</html>

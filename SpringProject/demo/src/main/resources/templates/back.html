@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Animation</title>
+    <style>
+        /* CSS for the text color and animation */
+        .success-message {
+            font-size: 24px;
+            font-weight: bold;
+            color: red; /* You can change the color here */
+            opacity: 0; /* Initially, text is invisible */
+            animation: fadeIn 3s forwards; /* Fade-in animation */
+        }
+
+        /* Define the fade-in animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <p id="message" class="success-message">The Data Added Successfully!!!</p>
+
+    <script>
+        // JavaScript to handle any dynamic changes, e.g., color change or further animation
+        window.onload = function() {
+            // You can modify the message or color dynamically if needed
+            document.getElementById('message').style.color = 'green'; // Change color to green after loading
+        }
+    </script>
+
+</body>
+</html>

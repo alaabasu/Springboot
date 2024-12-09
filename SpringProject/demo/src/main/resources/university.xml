@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<University>
+    <Student>
+        <Address>Cairo</Address>
+        <FirstName>Alaa</FirstName>
+        <Gender>female</Gender>
+        <GPA>3.0</GPA>
+        <ID>12</ID>
+        <LastName>Albsuny</LastName>
+        <Level>2</Level>
+    </Student>
+    <Student>
+        <Address>Dokki</Address>
+        <FirstName>Basma</FirstName>
+        <Gender>female</Gender>
+        <GPA>3.0</GPA>
+        <ID>3</ID>
+        <LastName>Ahmed</LastName>
+        <Level>3</Level>
+    </Student>
+    <Student>
+        <Address>Giza</Address>
+        <FirstName>Carie</FirstName>
+        <Gender>female</Gender>
+        <GPA>2.0</GPA>
+        <ID>2</ID>
+        <LastName>Goerge</LastName>
+        <Level>2</Level>
+    </Student>
+    <Student>
+        <Address>Maddi</Address>
+        <FirstName>Mohsna</FirstName>
+        <Gender>femlae</Gender>
+        <GPA>4.0</GPA>
+        <ID>1</ID>
+        <LastName>Mohamed</LastName>
+        <Level>3</Level>
+    </Student>
+</University>
